@@ -1,15 +1,27 @@
 <script setup lang="ts">
 
+import { reactive, toRefs, ref } from "vue"
+
+let value = ref("") 
+const onSearch = (searchValue: string) => {
+      console.log('use value', searchValue);
+      console.log('or use this.value', value.value);
+    };
 </script>
 <template>
 <div class="topbar">
     <div class="container">
-        
-        <div class="fontbtn" ><a>注册</a></div>
-        <div class="fontbtn" ><a>登录</a></div>
+        <a-avatar :size="42" >U</a-avatar>
+         <a-button type="link">注册</a-button>
+         <a-button type="link">登录</a-button>
     </div>   
     <div class="container">
-    
+        <a-input-search
+            v-model:value="value"
+            placeholder="搜索"
+            enter-button
+            @search="onSearch"
+        />
     </div>
 </div>
 </template>
@@ -24,20 +36,13 @@
 }
 .container{
     display: flex;
-    width: 150px;
+    width: 300px;
     height:100%;
     background-color: #fff;
     justify-self: center;
     align-items: center;
     margin-left: 25px;
-    margin-right: 25px;
+    margin-right: 15px;
 }
-.fontbtn{
-    font-size: 0.75em;
-    margin:0.5em;
-}
-.fontbtn :hover{
-    color:rgb(70, 97, 218);
-    cursor: pointer;
-}
+
 </style>
