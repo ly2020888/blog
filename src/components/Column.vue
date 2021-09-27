@@ -30,7 +30,7 @@ function handleClick():void{
     <div class="card-container">
      <a-card 
      title="文章标题" 
-     style="width: 900px;" 
+     style="width: 100%;" 
      :class="{ collapsed: isCollapsed}" 
      :bordered="false" 
      @click="handleClick"

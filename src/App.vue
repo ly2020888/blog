@@ -73,15 +73,20 @@ provide('appContext', getAppInfo) // provide 全局信息获取函数
 }
 #main{
   display: flex;
+  width: 100%;
+  padding-bottom: 20px;;
 }
 .passage{
   background-color: #fff;
   width: 100%;
+  margin-top: 0px !important;
+  margin-left: 50px;
   margin-right: 50px;
   height: 100%;
 }
 .infoBar{
   background-color: #fff;
+  margin-right: 50px;
 }
 .header{
  padding: 0 !important;
