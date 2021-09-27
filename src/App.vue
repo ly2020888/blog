@@ -33,9 +33,6 @@ provide('appContext', getAppInfo) // provide 全局信息获取函数
       <SideBar class="aside" ></SideBar>
     </a-layout-sider>
     <a-layout-content>
-      <router-link to="/Edit">Go to Home</router-link>
-      <router-link to="/Index">Go to About</router-link>
-      <router-link to="/View">Go to About</router-link>
       <div class="passage_container">
         <div id="main">
          <router-view class="passage"></router-view>
@@ -65,7 +62,7 @@ provide('appContext', getAppInfo) // provide 全局信息获取函数
   height:100%;
 }
 .passage_container{
-  margin: 5px;
+  margin-top: 20px;
   padding: 5px;
   width: 100%;
   justify-content: center;
@@ -79,7 +76,9 @@ provide('appContext', getAppInfo) // provide 全局信息获取函数
 }
 .passage{
   background-color: #fff;
-  
+  width: 100%;
+  margin-right: 50px;
+  height: 100%;
 }
 .infoBar{
   background-color: #fff;

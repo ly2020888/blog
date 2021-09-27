@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
+    "@kangc/v-md-editor": "^2.3.10",
     "ant-design-vue": "^2.2.8",
+    "md-editor-v3": "^1.4.4",
     "vue": "^3.2.13",
     "vue-router": "^4.0.11"
   },
