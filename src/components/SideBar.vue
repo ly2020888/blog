@@ -1,18 +1,17 @@
 <script setup lang="ts">
 
 import { watch, reactive, toRefs } from "vue"
-import { PieChartOutlined, DesktopOutlined, InboxOutlined,
-        MailOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
+import { SettingOutlined, UserOutlined, UnorderedListOutlined, EditOutlined  } from '@ant-design/icons-vue';
 
 let {selectedKeys, openKeys} = toRefs(reactive({
       collapsed: true,
-      selectedKeys: ['2'],
+      selectedKeys: ['1'],
       openKeys: [],
       preOpenKeys: [],
     }));
 
- watch( () =>selectedKeys.value, (val,oldVal)=>{
-    console.log(val)
+ watch( () =>selectedKeys.value, (val_)=>{
+    console.log(val_)
  })
 
 </script>
@@ -25,44 +24,30 @@ let {selectedKeys, openKeys} = toRefs(reactive({
     >
       <a-menu-item key="1">
         <template #icon>
-          <PieChartOutlined />
+           <router-link to="/Index"><UnorderedListOutlined /></router-link>
         </template>
-        <span>Option 1</span>
+        <span>主页</span>
       </a-menu-item>
       <a-menu-item key="2">
         <template #icon>
-          <DesktopOutlined />
+          <router-link to="/Edit"><EditOutlined /></router-link>
         </template>
-        <span>Option 2</span>
+        <span>编辑</span>
       </a-menu-item>
       <a-menu-item key="3">
         <template #icon>
-          <InboxOutlined />
+          <UserOutlined />
         </template>
-        <span>Option 3</span>
+        <span>个人</span>
       </a-menu-item>
-      <a-sub-menu key="sub1">
+
+      <a-menu-item key="4">
         <template #icon>
-          <MailOutlined />
+          <SettingOutlined />
         </template>
-        <template #title>Navigation One</template>
-        <a-menu-item key="5">Option 5</a-menu-item>
-        <a-menu-item key="6">Option 6</a-menu-item>
-        <a-menu-item key="7">Option 7</a-menu-item>
-        <a-menu-item key="8">Option 8</a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="sub2">
-        <template #icon>
-          <AppstoreOutlined />
-        </template>
-        <template #title>Navigation Two</template>
-        <a-menu-item key="9">Option 9</a-menu-item>
-        <a-menu-item key="10">Option 10</a-menu-item>
-        <a-sub-menu key="sub3" title="Submenu">
-          <a-menu-item key="11">Option 11</a-menu-item>
-          <a-menu-item key="12">Option 12</a-menu-item>
-        </a-sub-menu>
-      </a-sub-menu>
+        <span>设置</span>
+      </a-menu-item>
+
     </a-menu>
 </template>
 

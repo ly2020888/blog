@@ -79,9 +79,10 @@ provide('appContext', getAppInfo) // provide 全局信息获取函数
 .passage{
   background-color: #fff;
   width: 100%;
+  overflow-y: scroll;
   margin-top: 0px !important;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
   height: 100%;
 }
 .infoBar{
