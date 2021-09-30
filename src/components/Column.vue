@@ -1,22 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
 import router from "../router/route" // 获取全局路由对象
-interface passage {
-    title: string,
-    summary: string,
+import { Passage } from "../api/interfaces"
 
-}
 const props = defineProps({
     isCollapsed: Boolean,
     passageId: Number
 }) 
-let property:passage = reactive({
+let property:Passage = reactive({
     title: "undefined",
     summary: "undefined"
 })
 
-function handleClick():void{
-    console.log("get!")
+function handleRouter():void{
     router.push({
         path: '/View',
         query: {
@@ -33,7 +29,7 @@ function handleClick():void{
      style="width: 100%;" 
      :class="{ collapsed: isCollapsed}" 
      :bordered="false" 
-     @click="handleClick"
+     @click="handleRouter"
      hoverable
     >
     <template #extra><a href="#">more</a></template>

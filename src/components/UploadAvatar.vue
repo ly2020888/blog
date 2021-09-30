@@ -1,0 +1,63 @@
+<script setup lang="ts">
+import { ref } from "vue"
+import { FileItem, FileInfo } from "../api/interfaces"
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
+import { getBase64 } from "../api/utils"
+
+const fileList = ref([]);
+const loading = ref<boolean>(false);
+const imageUrl = ref<string>('');
+
+const handleChange = (info: FileInfo) => {
+    if (info.file.status === 'uploading') {
+        loading.value = true;
+        return;
+      }
+      if (info.file.status === 'done') {
+        getBase64(info.file.originFileObj, (base64Url: string) => {
+          imageUrl.value = base64Url;
+          loading.value = false;
+        });
+      }
+      if (info.file.status === 'error') {
+        loading.value = false;
+        message.error('upload error');
+      }
+};
+
+const beforeUpload = (file: FileItem) => {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+      if (!isJpgOrPng) {
+        message.error('You can only upload JPG file!');
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+      }
+      return isJpgOrPng && isLt2M;
+};
+</script>
+
+<template>
+    <a-upload
+        v-model:file-list="fileList"
+        name="avatar"
+        list-type="picture-card"
+        class="avatar-uploader"
+        :show-upload-list="false"
+        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        :before-upload="beforeUpload"
+        @change="handleChange"
+    >
+        <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+        <div v-else>
+        <loading-outlined v-if="loading"></loading-outlined>
+        <plus-outlined v-else></plus-outlined>
+        <div class="ant-upload-text">Upload</div>
+        </div>
+    </a-upload>
+</template>
+<style>
+
+</style>

@@ -2,7 +2,7 @@
 
 import { watch, reactive, toRefs } from "vue"
 import { SettingOutlined, UserOutlined, UnorderedListOutlined, EditOutlined  } from '@ant-design/icons-vue';
-
+import router from "../router/route" // 获取全局路由对象
 let {selectedKeys, openKeys} = toRefs(reactive({
       collapsed: true,
       selectedKeys: ['1'],
@@ -14,6 +14,11 @@ let {selectedKeys, openKeys} = toRefs(reactive({
     console.log(val_)
  })
 
+function handleRouter(path:string):void{
+  router.push({
+    path:path
+  })
+}
 </script>
 
 <template>
@@ -22,13 +27,13 @@ let {selectedKeys, openKeys} = toRefs(reactive({
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
     >
-      <a-menu-item key="1">
+      <a-menu-item key="1" @click="handleRouter('Index')">
         <template #icon>
-           <router-link to="/Index"><UnorderedListOutlined /></router-link>
+           <UnorderedListOutlined />
         </template>
         <span>主页</span>
       </a-menu-item>
-      <a-menu-item key="2">
+      <a-menu-item key="2" @click="handleRouter('Edit')">
         <template #icon>
           <router-link to="/Edit"><EditOutlined /></router-link>
         </template>
@@ -41,7 +46,7 @@ let {selectedKeys, openKeys} = toRefs(reactive({
         <span>个人</span>
       </a-menu-item>
 
-      <a-menu-item key="4">
+      <a-menu-item key="4" @click="handleRouter('Settings')">
         <template #icon>
           <SettingOutlined />
         </template>

@@ -4,7 +4,7 @@
 
 <template>
 <div class = "descriptions">
-    <a-descriptions title="原创文章">
+    <a-descriptions title="原创文章" size="small">
         <a-descriptions-item label="作者名称">Zhou Maomao</a-descriptions-item>
         <a-descriptions-item label="发布日期">2021/9/18</a-descriptions-item><br>
         <a-descriptions-item label="浏览数">0</a-descriptions-item>

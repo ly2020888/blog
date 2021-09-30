@@ -77,6 +77,7 @@
 <style>
 .container{
     display: flex;
+    overflow: hidden;
     flex-direction: column;
 }
 .editor{
