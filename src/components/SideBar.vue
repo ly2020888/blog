@@ -46,7 +46,7 @@ function handleRouter(path:string):void{
         <span>个人</span>
       </a-menu-item>
 
-      <a-menu-item key="4" @click="handleRouter('Settings')">
+      <a-menu-item key="4" @click="handleRouter('Setting')">
         <template #icon>
           <SettingOutlined />
         </template>

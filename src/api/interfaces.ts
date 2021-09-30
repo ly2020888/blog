@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 interface Passage {
     title: string,
     summary: string,
@@ -17,9 +18,14 @@ interface FileInfo {
     file: FileItem;
     fileList: FileItem[];
 }
-
+interface FormState {
+    account: string;
+    nickname: string;
+    delivery: boolean;
+  }
 export {
     Passage,
     FileItem,
-    FileInfo
+    FileInfo,
+    FormState
 }
