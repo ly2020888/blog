@@ -39,7 +39,7 @@ function handleRouter(path:string):void{
         </template>
         <span>编辑</span>
       </a-menu-item>
-      <a-menu-item key="3">
+      <a-menu-item key="3" @click="handleRouter('Personal')">
         <template #icon>
           <UserOutlined />
         </template>

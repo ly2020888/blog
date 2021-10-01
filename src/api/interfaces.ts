@@ -3,6 +3,10 @@ interface Passage {
     title: string,
     summary: string,
 }
+interface LoginFormState {
+    account: string;
+    pass: string;
+}
 interface FileItem {
     uid: string;
     name?: string;
@@ -27,5 +31,6 @@ export {
     Passage,
     FileItem,
     FileInfo,
-    FormState
+    FormState,
+    LoginFormState
 }
