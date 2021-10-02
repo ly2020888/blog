@@ -1,5 +1,6 @@
-const Url = "http://localhost:4000"
-
+const Url = "http://localhost:3000"
+const User = "http://localhost:3000/users"
 export {
-    Url 
+    Url,
+    User
 }

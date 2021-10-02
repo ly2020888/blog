@@ -27,10 +27,20 @@ interface FormState {
     nickname: string;
     delivery: boolean;
   }
+interface LoginStatus{
+    account: string;
+    status: number;
+}
+interface appInfo { 
+    isPhone:Boolean;
+    isLogged:Boolean;
+}
 export {
     Passage,
     FileItem,
     FileInfo,
     FormState,
-    LoginFormState
+    LoginFormState,
+    LoginStatus,
+    appInfo
 }

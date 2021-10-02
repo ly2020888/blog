@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
-import { defineComponent, reactive, ref, UnwrapRef } from 'vue';
+import { reactive, ref, UnwrapRef, defineEmits, inject } from 'vue';
+import Md5 from "../api/md5"
+import { login, logoutHttp } from "../api/http"
+import { message } from 'ant-design-vue';
 import { LoginFormState } from "../api/interfaces"
 import { passwordRegExp, accountRegExp } from "../api/utils"
+
+let getAppInfo = inject("getAppInfo", Function, true) //获取全局信息
+let setAppInfo = inject("setAppInfo", Function, true) //设置全局信息
+let app = getAppInfo();
+
 const loginFormState: UnwrapRef<LoginFormState> = reactive({
       account: '',
       pass: '',
@@ -44,8 +52,15 @@ const showLoginModal = () => {
 };
 
 const handleLoginOk = (e: MouseEvent) => {
-  console.log(loginFormState);
   loginVisible.value = false;
+  let encrypt = new Md5().get_md5(loginFormState.pass);
+  login(loginFormState.account,encrypt).then(function (res){
+      console.log(res)
+      message.success(res.data.text, 2);
+      //发送登录成功事件，通知顶层已登录，更新全局状态
+      app.value.isLogged = true;
+      setAppInfo(app);
+  })
 };
 const handleFinish = (values: LoginFormState) => {
     console.log(values);
@@ -53,7 +68,7 @@ const handleFinish = (values: LoginFormState) => {
 const handleFinishFailed = (errors: ValidateErrorEntity<LoginFormState>) => {
     console.log(errors);
 };
-//----
+//----注册逻辑
 const registerVisible = ref<boolean>(false);
 const showRegisterModal = () => {
     registerVisible.value = true;
@@ -63,13 +78,22 @@ const handleRegisterOk = (e: MouseEvent) => {
   console.log(e);
   registerVisible.value = false;
 };
+
+//---
+function logout():void{
+    logoutHttp()
+    app.value.isLogged = false;
+    setAppInfo(app);
+    message.success("已退出登录", 2);
+}
 </script>
 
 <template>
 <div class="t-container">
         <a-avatar :size="42" >U</a-avatar>
-         <a-button type="link" @click="showRegisterModal" >注册</a-button>
-         <a-button type="link" @click="showLoginModal" >登录</a-button>
+        <a-button type="link" @click="showRegisterModal" v-show="!app.isLogged">注册</a-button>
+        <a-button type="link" @click="showLoginModal" v-show="!app.isLogged">登录</a-button>
+        <a-button type="link" @click="logout" v-show="app.isLogged">退出登录</a-button>
     </div>  
 <a-modal v-model:visible="loginVisible" title="登录" @ok="handleLoginOk">
 <!-- 登录窗口 -->
