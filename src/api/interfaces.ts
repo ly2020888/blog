@@ -7,6 +7,13 @@ interface LoginFormState {
     account: string;
     pass: string;
 }
+interface RegisterFormState {
+    account: string;
+    pass: string;
+    checkpass: string;
+    email: string;
+    verification: string;
+}
 interface FileItem {
     uid: string;
     name?: string;
@@ -42,5 +49,6 @@ export {
     FormState,
     LoginFormState,
     LoginStatus,
-    appInfo
+    appInfo,
+    RegisterFormState
 }

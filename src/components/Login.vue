@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
-import { reactive, ref, UnwrapRef, defineEmits, inject } from 'vue';
+import { reactive, ref, UnwrapRef, inject } from 'vue';
 import Md5 from "../api/md5"
-import { login, logoutHttp } from "../api/http"
+import { login, logoutHttp, register } from "../api/http"
 import { message } from 'ant-design-vue';
-import { LoginFormState } from "../api/interfaces"
-import { passwordRegExp, accountRegExp } from "../api/utils"
+import { LoginFormState, RegisterFormState } from "../api/interfaces"
+import { passwordRegExp, accountRegExp, emailRegExp } from "../api/utils"
 
 let getAppInfo = inject("getAppInfo", Function, true) //获取全局信息
 let setAppInfo = inject("setAppInfo", Function, true) //设置全局信息
@@ -15,7 +15,14 @@ const loginFormState: UnwrapRef<LoginFormState> = reactive({
       account: '',
       pass: '',
 });
-const Login = ref()
+
+const registerFormState: UnwrapRef<RegisterFormState> = reactive({
+      account: '',
+      pass: '',
+      checkpass: "",
+      email: "",
+      verification: ""
+});
 let validatePass = async (rule: RuleObject, value: string) => {
     if (value === '') {
         return Promise.reject('密码不能为空');
@@ -28,17 +35,38 @@ let validatePass = async (rule: RuleObject, value: string) => {
 };
 let validateAccount = async (rule: RuleObject, value: string) => {
     if (value === '') {
-        return Promise.reject('账户不能为空');
+        return Promise.reject('该项不能为空');
     } else {
         if (accountRegExp(value)) {
             return Promise.resolve();
         }
-        return Promise.reject('账户至少6位');
+        return Promise.reject('该项至少6位');
     }
 };
+let validateCheckPass = async (rule: RuleObject, value: string) => {
+    
+    if ((value != registerFormState.pass) || !passwordRegExp(value)) {
+        return Promise.reject('两次输入的密码不同');
+    } else {
+        return Promise.resolve();
+    }
+};
+let validateEmail = async (rule: RuleObject, value: string) => {
+    
+    if (emailRegExp(value)) {
+        return Promise.resolve();
+        
+    } else {
+        return Promise.reject('邮箱格式不正确');
+    }
+};
+
 const rules = {
         account: [{ required: true, validator: validateAccount, trigger: 'change' }],
-        pass: [{ required: true, validator: validatePass, trigger: 'change' }]
+        pass: [{ required: true, validator: validatePass, trigger: 'change' }],
+        checkpass: [{ required: true, validator: validateCheckPass, trigger: 'change' }],
+        email: [{ required: true, validator: validateEmail, trigger: 'change' }],
+        verification: [{ required: true, validator: validateAccount, trigger: 'change' }]
 };
 
 const layout = {
@@ -53,30 +81,34 @@ const showLoginModal = () => {
 
 const handleLoginOk = (e: MouseEvent) => {
   loginVisible.value = false;
-  let encrypt = new Md5().get_md5(loginFormState.pass);
-  login(loginFormState.account,encrypt).then(function (res){
+  loginFormState.pass = new Md5().get_md5(loginFormState.pass);
+  login(loginFormState).then(function (res){
       console.log(res)
       message.success(res.data.text, 2);
       //发送登录成功事件，通知顶层已登录，更新全局状态
       app.value.isLogged = true;
       setAppInfo(app);
+  }, function(err){
+      console.log(err);
+       message.error("网络错误", 2);
   })
 };
-const handleFinish = (values: LoginFormState) => {
-    console.log(values);
-};
-const handleFinishFailed = (errors: ValidateErrorEntity<LoginFormState>) => {
-    console.log(errors);
-};
 //----注册逻辑
+
+
 const registerVisible = ref<boolean>(false);
 const showRegisterModal = () => {
     registerVisible.value = true;
 };
 
 const handleRegisterOk = (e: MouseEvent) => {
-  console.log(e);
+  console.log(registerFormState);
   registerVisible.value = false;
+  register(registerFormState).then(function(res){
+      message.success(res.data.text, 2);
+  },function(err){
+
+  })
 };
 
 //---
@@ -95,16 +127,14 @@ function logout():void{
         <a-button type="link" @click="showLoginModal" v-show="!app.isLogged">登录</a-button>
         <a-button type="link" @click="logout" v-show="app.isLogged">退出登录</a-button>
     </div>  
-<a-modal v-model:visible="loginVisible" title="登录" @ok="handleLoginOk">
+<a-modal v-model:visible="loginVisible" title="登录" :footer="null">
 <!-- 登录窗口 -->
     <a-form
     name="custom-validation"
-    ref="Login"
     :model="loginFormState"
     :rules="rules"
     v-bind="layout"
-    @finish="handleFinish"
-    @finishFailed="handleFinishFailed"
+    @finish="handleLoginOk"
   >
     <a-form-item has-feedback label="账户" name="account">
       <a-input v-model:value="loginFormState.account" autocomplete="off" />
@@ -112,14 +142,41 @@ function logout():void{
     <a-form-item has-feedback label="密码" name="pass">
       <a-input v-model:value="loginFormState.pass" type="password" autocomplete="off" />
     </a-form-item>
+    <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+      <a-button type="primary" html-type="submit">登录</a-button>
+    </a-form-item>
   </a-form>
 </a-modal>
 
-<a-modal v-model:visible="registerVisible" title="Basic Modal" @ok="handleRegisterOk">
+<a-modal v-model:visible="registerVisible" title="注册" :footer="null">
 <!-- 注册窗口 -->
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+  <a-form
+    name="custom-validation"
+    :model="registerFormState"
+    :rules="rules"
+    v-bind="layout"
+    @finish="handleRegisterOk"
+  >
+    <a-form-item has-feedback label="账户" name="account">
+      <a-input v-model:value="registerFormState.account" autocomplete="off" />
+    </a-form-item>
+    <a-form-item has-feedback label="密码" name="pass">
+      <a-input v-model:value="registerFormState.pass" type="password" autocomplete="off" />
+    </a-form-item>
+    <a-form-item has-feedback label="确认密码" name="checkpass">
+      <a-input v-model:value="registerFormState.checkpass" type="password" autocomplete="off" />
+    </a-form-item>
+    <a-form-item has-feedback label="邮箱" name="email">
+      <a-input v-model:value="registerFormState.email" autocomplete="off" />
+    </a-form-item>
+    <a-form-item has-feedback label="验证码" name="verification">
+      <a-input v-model:value="registerFormState.verification" autocomplete="off" />
+    </a-form-item>
+    <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+      <a-button type="primary" html-type="submit">注册</a-button>
+    </a-form-item>
+  </a-form>
+  
 </a-modal>
 
 </template>
