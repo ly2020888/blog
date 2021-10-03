@@ -80,17 +80,23 @@ const showLoginModal = () => {
 };
 
 const handleLoginOk = (e: MouseEvent) => {
-  loginVisible.value = false;
+  
   loginFormState.pass = new Md5().get_md5(loginFormState.pass);
+  
   login(loginFormState).then(function (res){
-      console.log(res)
-      message.success(res.data.text, 2);
-      //发送登录成功事件，通知顶层已登录，更新全局状态
-      app.value.isLogged = true;
-      setAppInfo(app);
+      if(!res.data.code){
+        message.success(res.data.text, 2);
+        app.value.isLogged = true;
+        setAppInfo(app);
+        loginVisible.value = false;
+      }else{
+        message.error(res.data.text, 2);
+        
+      }
+      loginFormState.pass = "";
   }, function(err){
       console.log(err);
-       message.error("网络错误", 2);
+      message.error("网络错误", 2);
   })
 };
 //----注册逻辑
@@ -102,12 +108,23 @@ const showRegisterModal = () => {
 };
 
 const handleRegisterOk = (e: MouseEvent) => {
-  console.log(registerFormState);
-  registerVisible.value = false;
-  register(registerFormState).then(function(res){
-      message.success(res.data.text, 2);
-  },function(err){
 
+  registerFormState.pass = new Md5().get_md5(registerFormState.pass);
+  registerFormState.checkpass = registerFormState.pass
+  register(registerFormState).then(function(res){
+    if(!res.data.code){
+      message.success(res.data.text, 2);
+      registerVisible.value = false;
+    }
+    else  {
+      message.error(res.data.text, 2);
+      registerFormState.account="";
+      registerFormState.pass = "";
+      registerFormState.checkpass = "";
+    }
+
+  },function(err){
+    message.error("网页遇到错误", 2);
   })
 };
 
