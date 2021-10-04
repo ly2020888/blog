@@ -4,10 +4,9 @@
 import SideBar from './components/SideBar.vue'
 import TopBar from "./components/TopBar.vue"
 import Information from "./pages/Information.vue"
-import { ref, onMounted, provide, reactive, Ref } from "vue"
+import { ref, provide, Ref } from "vue"
 import { appInfo } from "./api/interfaces"
 import { getLoginStatus } from "./api/http"
-import { convertLegacyProps } from '_ant-design-vue@2.2.8@ant-design-vue/lib/button/buttonTypes'
 let collapsed = document.body.clientWidth > 500? ref<boolean>(true) : ref<boolean>(false)
 
 let app:Ref<appInfo> = ref({
