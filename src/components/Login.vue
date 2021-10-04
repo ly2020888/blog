@@ -2,7 +2,7 @@
 import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
 import { reactive, ref, UnwrapRef, inject } from 'vue';
 import Md5 from "../api/md5"
-import { login, logoutHttp, register } from "../api/http"
+import { login, logoutHttp, register, getUserInfo } from "../api/http"
 import { message } from 'ant-design-vue';
 import { LoginFormState, RegisterFormState } from "../api/interfaces"
 import { passwordRegExp, accountRegExp, emailRegExp } from "../api/utils"
@@ -80,14 +80,34 @@ const showLoginModal = () => {
 };
 
 const handleLoginOk = (e: MouseEvent) => {
-  loginVisible.value = false;
+  
   loginFormState.pass = new Md5().get_md5(loginFormState.pass);
   login(loginFormState).then(function (res){
-      console.log(res)
-      message.success(res.data.text, 2);
-      //发送登录成功事件，通知顶层已登录，更新全局状态
-      app.value.isLogged = true;
-      setAppInfo(app);
+
+      if(res.data.code){
+        message.error(res.data.text, 2);
+      }else{
+        message.success(res.data.text, 2);
+        loginVisible.value = false;
+        getUserInfo(res.data.account).then(function(response){
+        if(response.data.code){
+          message.error(response.data.text,2);
+        }else{
+
+          app.value.account = response.data.account;
+          app.value.email = response.data.email;
+          app.value.verification = response.data.verification;
+          app.value.avatarId = response.data.avatarId;
+          app.value.isLogged = true;
+          setAppInfo(app);//发送登录成功事件，通知顶层已登录，更新全局状态 
+        }
+        
+      })
+      }
+      
+      
+      // 获取用户的详细信息
+      
   }, function(err){
       console.log(err);
        message.error("网络错误", 2);
@@ -107,7 +127,7 @@ const handleRegisterOk = (e: MouseEvent) => {
   register(registerFormState).then(function(res){
       message.success(res.data.text, 2);
   },function(err){
-
+      message.error("网络错误", 2);
   })
 };
 
