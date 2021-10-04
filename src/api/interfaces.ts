@@ -41,6 +41,10 @@ interface LoginStatus{
 interface appInfo { 
     isPhone:Boolean;
     isLogged:Boolean;
+    account: string | undefined;
+    email: string | undefined;
+    verification: string | undefined;
+    avatarId : Number | undefined;
 }
 export {
     Passage,

@@ -11,7 +11,11 @@ let collapsed = document.body.clientWidth > 500? ref<boolean>(true) : ref<boolea
 
 let app:Ref<appInfo> = ref({
   isPhone:!collapsed.value,
-  isLogged:false
+  isLogged:false,
+  account: undefined,
+  email: undefined,
+  verification: undefined,
+  avatarId: undefined
 })
 getLoginStatus().then(function (res){
   app.value.isLogged = res.data.isLogged
