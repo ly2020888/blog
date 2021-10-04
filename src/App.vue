@@ -7,6 +7,7 @@ import Information from "./pages/Information.vue"
 import { ref, onMounted, provide, reactive, Ref } from "vue"
 import { appInfo } from "./api/interfaces"
 import { getLoginStatus } from "./api/http"
+import { convertLegacyProps } from '_ant-design-vue@2.2.8@ant-design-vue/lib/button/buttonTypes'
 let collapsed = document.body.clientWidth > 500? ref<boolean>(true) : ref<boolean>(false)
 
 let app:Ref<appInfo> = ref({
@@ -22,9 +23,11 @@ getLoginStatus().then(function (res){
 })
 function getAppInfo():Ref<appInfo>{
    return app
+   
 }
 function setAppInfo(newone:Ref<appInfo>):void{
   app.value = newone.value
+  console.log(app.value)
 }
 provide('getAppInfo', getAppInfo) // provide 全局信息获取函数
 provide('setAppInfo', setAppInfo) // provide 全局信息设置函数
