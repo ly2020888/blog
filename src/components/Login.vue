@@ -2,7 +2,7 @@
 import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
 import { reactive, ref, UnwrapRef, inject } from 'vue';
 import Md5 from "../api/md5"
-import { login, logoutHttp, register } from "../api/http"
+import { login, logoutHttp, register, getUserInfo } from "../api/http"
 import { message } from 'ant-design-vue';
 import { LoginFormState, RegisterFormState } from "../api/interfaces"
 import { passwordRegExp, accountRegExp, emailRegExp } from "../api/utils"
@@ -86,8 +86,18 @@ const handleLoginOk = (e: MouseEvent) => {
   login(loginFormState).then(function (res){
       if(!res.data.code){
         message.success(res.data.text, 2);
-        app.value.isLogged = true;
-        setAppInfo(app);
+        getUserInfo(res.data.account).then(function(response){
+        if(response.data.code){
+          message.error(response.data.text,2);
+        }else{
+
+          app.value.account = response.data.account;
+          app.value.email = response.data.email;
+          app.value.verification = response.data.verification;
+          app.value.avatarId = response.data.avatarId;
+          app.value.isLogged = true;
+          setAppInfo(app);//发送登录成功事件，通知顶层已登录，更新全局状态 
+        }})
         loginVisible.value = false;
       }else{
         message.error(res.data.text, 2);
@@ -115,6 +125,8 @@ const handleRegisterOk = (e: MouseEvent) => {
     if(!res.data.code){
       message.success(res.data.text, 2);
       registerVisible.value = false;
+      registerFormState.pass = "";
+      registerFormState.checkpass = "";
     }
     else  {
       message.error(res.data.text, 2);

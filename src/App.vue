@@ -4,23 +4,29 @@
 import SideBar from './components/SideBar.vue'
 import TopBar from "./components/TopBar.vue"
 import Information from "./pages/Information.vue"
-import { ref, onMounted, provide, reactive, Ref } from "vue"
+import { ref, provide, Ref } from "vue"
 import { appInfo } from "./api/interfaces"
 import { getLoginStatus } from "./api/http"
 let collapsed = document.body.clientWidth > 500? ref<boolean>(true) : ref<boolean>(false)
 
 let app:Ref<appInfo> = ref({
   isPhone:!collapsed.value,
-  isLogged:false
+  isLogged:false,
+  account: undefined,
+  email: undefined,
+  verification: undefined,
+  avatarId: undefined
 })
 getLoginStatus().then(function (res){
   app.value.isLogged = res.data.isLogged
 })
 function getAppInfo():Ref<appInfo>{
    return app
+   
 }
 function setAppInfo(newone:Ref<appInfo>):void{
   app.value = newone.value
+  console.log(app.value)
 }
 provide('getAppInfo', getAppInfo) // provide 全局信息获取函数
 provide('setAppInfo', setAppInfo) // provide 全局信息设置函数
