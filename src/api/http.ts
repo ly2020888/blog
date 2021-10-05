@@ -1,6 +1,7 @@
-import { LoginFormState , RegisterFormState } from "./interfaces"
-import { User } from "./settings"
+import { LoginFormState , RegisterFormState, Passage } from "./interfaces"
+import { User, PassageUrl } from "./settings"
 import axios from 'axios'
+
 import { resolveComponent } from "_vue@3.2.19@vue"
 axios.defaults.withCredentials = true
 
@@ -56,4 +57,19 @@ export async function getUserInfo(account:string){
       }
     })
     return p;
+}
+export async function uploadPassage(passage: Passage, account:string) {
+  // 使用标题和一组随机数生成id
+  
+  const p = await axios({
+    method:'post',
+    url:`${PassageUrl}/uploadPassage`,
+    data: {
+      passageId: passage.passageId,
+      account: account,
+      content: passage.content,
+      title: passage.title
+    }
+  })
+  return p;
 }

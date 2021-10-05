@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from "./router/route"
+import MdEditor from 'md-editor-v3';
 import { Button, Checkbox, LayoutHeader, LayoutContent,
             LayoutFooter, Layout, Menu, Avatar,
                 Input, Card, Calendar, List, Tag,
@@ -15,7 +16,7 @@ const app = createApp(App);
         LayoutContent, LayoutFooter, Menu, Avatar,
             Input, Card, Calendar, List, Tag,
                 Comment, Breadcrumb, Descriptions, Upload,
-                    Form, Switch, Tabs, Modal, 
+                    Form, Switch, Tabs, Modal,
                         router].forEach( ( el:any ) =>
     app.use(el))
 

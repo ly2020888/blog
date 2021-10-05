@@ -1,7 +1,13 @@
 <script setup lang="ts">
-    import { ref, reactive, toRefs, nextTick } from "vue"
+    import { ref, reactive, nextTick, inject } from "vue"
     import MdEditor from 'md-editor-v3';
+    import { Passage } from "../api/interfaces"
     import 'md-editor-v3/lib/style.css';
+    import { uploadPassage } from "../api/http"
+    import { message } from "_ant-design-vue@2.2.8@ant-design-vue";
+    let getAppInfo = inject("getAppInfo", Function, true);
+    let resetAppInfo = inject("resetAppInfo", Function, true)
+    let app = getAppInfo();
     let text = ref("");
     let title = ref("")
     const inputRef = ref();
@@ -34,6 +40,34 @@
         inputValue: '',
       });
     };
+
+    function sendPassage(){
+      
+      if(app.value.account){
+        const passageId = "2312312";
+        let passage:Passage = {
+          passageId: passageId,
+          title: title.value,
+          content: text.value,
+          tags: state.tags,
+          createdAt: undefined,
+          updatedAt: undefined
+        }
+        uploadPassage(passage, app.value.account).then(function(res){
+          console.log(res);
+          if(!res.data.code){
+            message.success(res.data.text, 2);
+          }
+          else {
+            message.error(res.data.text, 2);
+            resetAppInfo();
+          } 
+        })
+      }else{
+        message.error("请先登录", 2);
+      }
+      
+    }
 </script>
 <template>
     <div class="container">
@@ -69,7 +103,7 @@
             </a-tag>
         </div>
         <div class="btn-box">
-            <a-button type="primary" class="btn" >发送文章</a-button>
+            <a-button type="primary" class="btn" @click="sendPassage">发送文章</a-button>
             <a-button type="primary" class="btn" >保存草稿</a-button>
         </div>
     </div>

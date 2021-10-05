@@ -26,11 +26,18 @@ function getAppInfo():Ref<appInfo>{
 }
 function setAppInfo(newone:Ref<appInfo>):void{
   app.value = newone.value
-  console.log(app.value)
+  
+}
+function resetAppInfo():void{
+  app.value.account=undefined,
+  app.value.email = undefined,
+  app.value.verification = undefined,
+  app.value.avatarId = undefined,
+  app.value.isLogged = false;
 }
 provide('getAppInfo', getAppInfo) // provide 全局信息获取函数
 provide('setAppInfo', setAppInfo) // provide 全局信息设置函数
-
+provide('resetAppInfo', resetAppInfo)
 </script>
 
 <template>

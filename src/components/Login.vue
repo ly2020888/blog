@@ -2,13 +2,15 @@
 import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
 import { reactive, ref, UnwrapRef, inject } from 'vue';
 import Md5 from "../api/md5"
+import { Image } from "../api/settings"
 import { login, logoutHttp, register, getUserInfo } from "../api/http"
 import { message } from 'ant-design-vue';
 import { LoginFormState, RegisterFormState } from "../api/interfaces"
-import { passwordRegExp, accountRegExp, emailRegExp } from "../api/utils"
+import { passwordRegExp, accountRegExp, emailRegExp, getImgUrl } from "../api/utils"
 
 let getAppInfo = inject("getAppInfo", Function, true) //获取全局信息
 let setAppInfo = inject("setAppInfo", Function, true) //设置全局信息
+let resetAppInfo = inject("resetAppInfo", Function, true) //设置全局信息
 let app = getAppInfo();
 
 const loginFormState: UnwrapRef<LoginFormState> = reactive({
@@ -142,16 +144,15 @@ const handleRegisterOk = (e: MouseEvent) => {
 
 //---
 function logout():void{
-    logoutHttp()
-    app.value.isLogged = false;
-    setAppInfo(app);
+    logoutHttp();
+    resetAppInfo();
     message.success("已退出登录", 2);
 }
 </script>
 
 <template>
 <div class="t-container">
-        <a-avatar :size="42" >U</a-avatar>
+        <a-avatar :size="42" :src='getImgUrl(Image,app.avatarId)'>U</a-avatar>
         <a-button type="link" @click="showRegisterModal" v-show="!app.isLogged">注册</a-button>
         <a-button type="link" @click="showLoginModal" v-show="!app.isLogged">登录</a-button>
         <a-button type="link" @click="logout" v-show="app.isLogged">退出登录</a-button>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
 import router from "../router/route" // 获取全局路由对象
-import { Passage } from "../api/interfaces"
+import { Summary } from "../api/interfaces"
 
 const props = defineProps({
     isCollapsed: Boolean,
     passageId: Number
 }) 
-let property:Passage = reactive({
+let property:Summary = reactive({
     title: "undefined",
     summary: "undefined"
 })

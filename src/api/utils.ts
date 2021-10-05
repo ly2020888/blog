@@ -17,3 +17,10 @@ export function emailRegExp(value:string):Boolean{
     const reg:RegExp = /^[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/
     return reg.test(value)
 }
+
+export function getImgUrl(Image:string, avatarId:string){
+    if(avatarId === undefined){
+        return Image+"0.jpg"
+    }
+    else return Image+avatarId+".jpg"
+}

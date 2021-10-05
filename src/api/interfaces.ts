@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-interface Passage {
+interface Summary {
     title: string,
     summary: string,
 }
@@ -46,8 +46,17 @@ interface appInfo {
     verification: string | undefined;
     avatarId : Number | undefined;
 }
+interface Passage{
+    passageId: string;
+    title: string;
+    content: string;
+    tags: string[] | undefined;
+    createdAt: string | undefined;
+    updatedAt: string | undefined;
+}
 export {
     Passage,
+    Summary,
     FileItem,
     FileInfo,
     FormState,
