@@ -50,7 +50,6 @@ interface Passage{
     passageId: string;
     title: string;
     content: string;
-    tags: string[] | undefined;
     createdAt: string | undefined;
     updatedAt: string | undefined;
 }

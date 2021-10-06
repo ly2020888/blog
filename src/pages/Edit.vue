@@ -3,6 +3,7 @@
     import MdEditor from 'md-editor-v3';
     import { Passage } from "../api/interfaces"
     import 'md-editor-v3/lib/style.css';
+    import Md5 from "../api/md5"
     import { uploadPassage } from "../api/http"
     import { message } from "_ant-design-vue@2.2.8@ant-design-vue";
     let getAppInfo = inject("getAppInfo", Function, true);
@@ -44,12 +45,16 @@
     function sendPassage(){
       
       if(app.value.account){
-        const passageId = "2312312";
+        
+        if(!title.value || !text.value){
+          message.error("请输入标题和文章内容", 2);
+          return
+        }
+        const passageId = new Md5().get_md5(text.value.slice(0, 200)+Math.round(Math.random()*100));
         let passage:Passage = {
           passageId: passageId,
           title: title.value,
           content: text.value,
-          tags: state.tags,
           createdAt: undefined,
           updatedAt: undefined
         }
@@ -73,7 +78,7 @@
     <div class="container">
         <a-input v-model:value="title" placeholder="请输入文章标题" />
         <md-editor v-model="text" class="editor"/>
-        <div class="tag-box">
+        <!-- <div class="tag-box">
 
             <template v-for="(tag, index) in state.tags" :key="index">
                 <a-tooltip v-if="tag.length > 20" :title="tag">
@@ -101,7 +106,7 @@
             <plus-outlined />
                 New Tag
             </a-tag>
-        </div>
+        </div> -->
         <div class="btn-box">
             <a-button type="primary" class="btn" @click="sendPassage">发送文章</a-button>
             <a-button type="primary" class="btn" >保存草稿</a-button>

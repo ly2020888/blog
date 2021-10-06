@@ -6,15 +6,15 @@ import { resolveComponent } from "_vue@3.2.19@vue"
 axios.defaults.withCredentials = true
 
 export async function getLoginStatus() { //探测登录状态
-    const p = await axios({
+    const result = await axios({
         method:'post',
         url:`${User}/loginStatus`,
       })
-    return p
+    return result
 }
 
 export async function login(loginInfo:LoginFormState) { //登录
-    const p = await axios({
+    const result = await axios({
         method:'post',
         url:`${User}/login`,
         data: {
@@ -22,19 +22,19 @@ export async function login(loginInfo:LoginFormState) { //登录
             pass: loginInfo.pass
         },
       })
-    return p
+    return result
 }
 
 export async function logoutHttp() {
-    const p = await axios({
+    const result = await axios({
         method:'get',
         url:`${User}/logout`
       })
-    return p
+    return result
 }
 
 export async function register(registerInfo:RegisterFormState) {
-    const p = await axios({
+    const result = await axios({
       method:'post',
       url:`${User}/register`,
       data: {
@@ -45,23 +45,23 @@ export async function register(registerInfo:RegisterFormState) {
         verification: registerInfo.verification
       }
     })
-    return p
+    return result;
 }
 
 export async function getUserInfo(account:string){
-    const p = await axios({
+    const result = await axios({
       method:'post',
       url:`${User}/userInfo`,
       data: {
         account: account,
       }
     })
-    return p;
+    return result;
 }
 export async function uploadPassage(passage: Passage, account:string) {
   // 使用标题和一组随机数生成id
   
-  const p = await axios({
+  const result = await axios({
     method:'post',
     url:`${PassageUrl}/uploadPassage`,
     data: {
@@ -71,5 +71,12 @@ export async function uploadPassage(passage: Passage, account:string) {
       title: passage.title
     }
   })
-  return p;
+  return result;
+}
+export async function getTotalPassageNum() {
+  const result = await axios({
+    method:'get',
+    url:`${PassageUrl}/getTotalPassageNum`
+  })
+  return result;
 }

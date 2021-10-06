@@ -6,7 +6,8 @@ import { Button, Checkbox, LayoutHeader, LayoutContent,
             LayoutFooter, Layout, Menu, Avatar,
                 Input, Card, Calendar, List, Tag,
                     Comment, Breadcrumb, Descriptions, Upload,
-                        Form, Switch, Tabs, Modal } from 'ant-design-vue';
+                        Form, Switch, Tabs, Modal,
+                            Pagination } from 'ant-design-vue';
 
 import 'ant-design-vue/dist/antd.css';
 
@@ -16,7 +17,7 @@ const app = createApp(App);
         LayoutContent, LayoutFooter, Menu, Avatar,
             Input, Card, Calendar, List, Tag,
                 Comment, Breadcrumb, Descriptions, Upload,
-                    Form, Switch, Tabs, Modal,
+                    Form, Switch, Tabs, Modal, Pagination,
                         router].forEach( ( el:any ) =>
     app.use(el))
 

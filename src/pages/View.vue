@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import moment from 'moment';
-import { Url } from "../api/settings"
+import { PassageUrl } from "../api/settings"
+import { getTotalPassageNum } from "../api/http"
 import PassageInfo from "../components/PassageInfo.vue";
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
@@ -30,6 +31,8 @@ const handleSubmit = () => {
     }, 1000);
 
 };
+
+
 const text:string = a
 </script>
 <template>
