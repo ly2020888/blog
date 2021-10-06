@@ -50,7 +50,7 @@
           message.error("请输入标题和文章内容", 2);
           return
         }
-        const passageId = new Md5().get_md5(text.value.slice(0, 200)+Math.round(Math.random()*100));
+        const passageId = new Md5().get_md5(text.value.slice(0, 20)+Math.round(Math.random()*100));
         let passage:Passage = {
           passageId: passageId,
           title: title.value,

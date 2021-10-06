@@ -5,18 +5,19 @@ import { Summary } from "../api/interfaces"
 
 const props = defineProps({
     isCollapsed: Boolean,
-    passageId: Number
+    passageId: String,
+    title: String,
+    content: String,
+    createdAt: String,
+    updatedAt: String
 }) 
-let property:Summary = reactive({
-    title: "undefined",
-    summary: "undefined"
-})
+
 
 function handleRouter():void{
     router.push({
         path: '/View',
         query: {
-            passageId: '114514'
+            passageId: props.passageId
         } 
     })
 }
@@ -25,15 +26,14 @@ function handleRouter():void{
 <template>
     <div class="card-container">
      <a-card 
-     title="文章标题" 
+     :title="title"
      style="width: 100%;" 
      :class="{ collapsed: isCollapsed}" 
-     :bordered="false" 
      @click="handleRouter"
      hoverable
     >
-    <template #extra><a href="#">more</a></template>
-        <p>“文章梗概阅读文章是从整体到部分再到整体,即初读文章,了解大意后,再理解字词,读懂每句话,给文章分段和归纳段意,最后回到文章整体上来,进而抓住文章的主要内容,并概括中心思想。</p>
+    <template ><a href="#">more</a></template>
+        <p>{{ props.content?.slice(0,50)+"..."}}</p>
      </a-card>
     </div>
 </template>
@@ -44,7 +44,5 @@ function handleRouter():void{
 .card-container{
     margin: 5px;
     padding: 15px 15px;
-    
-    border-bottom: 1px solid rbga(0,0,0,0.5);
 }
 </style>

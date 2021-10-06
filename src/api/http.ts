@@ -80,3 +80,25 @@ export async function getTotalPassageNum() {
   })
   return result;
 }
+
+export async function getPassage(offset:Number) {
+  const result = await axios({
+    method:'post',
+    url:`${PassageUrl}/getPassage`,
+    data:{
+      offset: offset
+    }
+  })
+  return result;
+}
+
+export async function getPassageContentById(passageId:String) {
+  const result = await axios({
+    method:'get',
+    url:`${PassageUrl}/getPassageContentById`,
+    data:{
+      offset: passageId
+    }
+  })
+  return result;
+}
