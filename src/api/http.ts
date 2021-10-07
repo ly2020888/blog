@@ -92,12 +92,12 @@ export async function getPassage(offset:Number) {
   return result;
 }
 
-export async function getPassageContentById(passageId:String) {
+export async function getPassageContentById(passageId:String|string[]) {
   const result = await axios({
-    method:'get',
+    method:'post',
     url:`${PassageUrl}/getPassageContentById`,
     data:{
-      offset: passageId
+      passageId: passageId
     }
   })
   return result;
