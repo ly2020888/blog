@@ -53,6 +53,15 @@ interface Passage{
     createdAt: string | undefined;
     updatedAt: string | undefined;
 }
+interface userInfo{
+    account: String;
+    email: String;
+    priority: Number;
+    avatarId: String;
+    fansNum: Number;
+    visitNum: Number;
+    description: String;
+}
 export {
     Passage,
     Summary,
@@ -62,5 +71,6 @@ export {
     LoginFormState,
     LoginStatus,
     appInfo,
-    RegisterFormState
+    RegisterFormState,
+    userInfo
 }

@@ -1,8 +1,25 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import { UserOutlined } from '@ant-design/icons-vue';
+import { getUserInfo } from "../api/http"
+import { useRoute } from "vue-router"
+import { userInfo } from "../api/interfaces"
+import { getImgUrl } from "../api/utils"
+import { Image } from "../api/settings";
 import Frame from "../components/Frame.vue"
 const activeKey = ref("1");
+const aUserInfo = ref({} as userInfo)
+
+const route = useRoute() //route 对象存放了待查询的用户id
+onMounted(() => {
+    console.log(route.params.account);
+    getUserInfo(route.params.account).then(function(res){
+        aUserInfo.value = res.data
+        console.log(res.data)
+    },function(err){
+        console.log(err);
+    })
+})
 </script>
 
 <template>
@@ -10,14 +27,14 @@ const activeKey = ref("1");
     <div class="userinfo">
     <a-descriptions title="用户信息" >
         <a-descriptions-item > 
-            <a-avatar :size="64">
+            <a-avatar :size="64" :src="getImgUrl(Image,aUserInfo.avatarId)">
             <template #icon><UserOutlined /></template>
             </a-avatar>
         </a-descriptions-item>
-        <a-descriptions-item label="粉丝数量">0</a-descriptions-item>
-        <a-descriptions-item label="被访问量">0</a-descriptions-item>
+        <a-descriptions-item label="粉丝数量">{{aUserInfo.fansNum}}</a-descriptions-item>
+        <a-descriptions-item label="被访问量">{{aUserInfo.visitNum}}</a-descriptions-item>
         <a-descriptions-item label="个人描述">
-        No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+        {{aUserInfo.description}}
         </a-descriptions-item>
     </a-descriptions>
     </div>

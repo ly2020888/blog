@@ -48,7 +48,7 @@ export async function register(registerInfo:RegisterFormState) {
     return result;
 }
 
-export async function getUserInfo(account:string){
+export async function getUserInfo(account:string|string[]){
     const result = await axios({
       method:'post',
       url:`${User}/userInfo`,

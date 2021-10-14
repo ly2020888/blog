@@ -10,7 +10,7 @@ const routes = [
     { path: '/Index', component: Index },
     { path: '/View/:passageId', component: View },
     { path: '/Setting', component: Setting },
-    { path: '/Personal', component: Personal },
+    { path: '/Personal/:account', component: Personal },
 ]
 
 const router = createRouter({

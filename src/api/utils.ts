@@ -18,7 +18,7 @@ export function emailRegExp(value:string):Boolean{
     return reg.test(value)
 }
 
-export function getImgUrl(Image:string, avatarId:string){
+export function getImgUrl(Image:string, avatarId:String){
     if(avatarId === undefined){
         return Image+"0.jpg"
     }

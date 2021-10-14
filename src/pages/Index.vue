@@ -19,8 +19,8 @@
     })
     watch(
         ()=>current.value,
-        (oldValue, Value)=>{
-            getPassage((Value)*5).then(function(res){
+        (Value, oldValue)=>{
+            getPassage((Value-1)*5).then(function(res){
                 passageList.value = res.data;
             })
     })

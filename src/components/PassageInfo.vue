@@ -19,7 +19,7 @@ const props = defineProps({
 
 <style>
 .descriptions{
-    width: 60%;
+    width: 90%;
     padding: 20px;
     border: 1px solid rgba(0,0,0,0.1);
 }
