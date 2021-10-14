@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref, onMounted, Ref } from "vue"
 import moment from 'moment';
-import { PassageUrl } from "../api/settings"
 import PassageInfo from "../components/PassageInfo.vue";
 import MdEditor from 'md-editor-v3';
+import { Passage } from "../api/interfaces"
+import { useRoute } from "vue-router"
 import 'md-editor-v3/lib/style.css';
 import a from "../testData/md"
+import { getPassageContentById } from "../api/http"
 type Comment = Record<string, string>;
 const comments = ref<Comment[]>([]);
 const submitting = ref<boolean>(false);
@@ -30,23 +32,36 @@ const handleSubmit = () => {
     }, 1000);
 
 };
-
+const route = useRoute()
+let passage:Ref<Passage> = ref({} as Passage);
+let UserAccount  = ref("")
+let date = ref("")
+onMounted(()=>{
+    
+    getPassageContentById(route.params.passageId).then(function(res){
+        passage.value = res.data
+        UserAccount.value = res.data.UserAccount
+        date.value = res.data.updatedAt
+    })
+})
 
 const text:string = a
 </script>
 <template>
 
     <div class="view-container">
-        
         <a-breadcrumb>
             <a-breadcrumb-item>Home</a-breadcrumb-item>
             <a-breadcrumb-item><a href="/Index">Index</a></a-breadcrumb-item>
             <a-breadcrumb-item>Passage</a-breadcrumb-item>
         </a-breadcrumb>
-        <p class=" h1 bold">文章标题在这里</p>
-        <PassageInfo></PassageInfo>
+        <p class=" h1 bold">{{passage.title}}</p>
+        <PassageInfo 
+        :account="UserAccount"
+        :date="date"
+        ></PassageInfo>
         <md-editor 
-                :modelValue="text" 
+                :modelValue="passage.content" 
                 :previewOnly="true"
         />
         <p class="declear">文章著作权属于作者，未经许可禁止转载</p>

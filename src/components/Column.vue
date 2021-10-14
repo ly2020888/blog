@@ -15,10 +15,7 @@ const props = defineProps({
 
 function handleRouter():void{
     router.push({
-        path: '/View',
-        query: {
-            passageId: props.passageId
-        } 
+        path: '/View/'+props.passageId
     })
 }
 
